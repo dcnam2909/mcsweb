@@ -1,4 +1,16 @@
-import { Button, Grid, MenuItem, Modal, TextField, Typography } from '@mui/material';
+import {
+	Button,
+	FormControl,
+	FormControlLabel,
+	FormLabel,
+	Grid,
+	MenuItem,
+	Modal,
+	Radio,
+	RadioGroup,
+	TextField,
+	Typography,
+} from '@mui/material';
 import { Box } from '@mui/system';
 import Swal from 'sweetalert2';
 import { useForm } from 'react-hook-form';
@@ -15,20 +27,23 @@ export default function ModalAddEvent({ isOpen, handleClose, addNewEventState })
 		handleSubmit,
 		setValue,
 		formState: { errors },
-	} = useForm();
+	} = useForm({ defaultValues: { repeatEvent: 0, dateEvent: new Date() } });
 	const [dateModal, setDateModal] = useState(Date.now());
+	const [repeatEvent, setRepeatEvent] = useState(0);
 	const [dateOpenRegModal, setDateOpenRegModal] = useState(Date.now());
 	const [dateEndRegModal, setDateEndRegModal] = useState(Date.now());
 	const [typeEvent, setTypeEvent] = useState('');
 	const handleAddNewEvent = (data) => {
+		console.log(data);
 		addNewEvent(data)
 			.then((res) => {
+				console.log(res.event);
 				addNewEventState(res.event);
 				handleClose();
 				Swal.fire({
 					position: 'center',
 					icon: 'success',
-					title: 'Thêm sự kiện mới thành công',
+					title: `Thêm thành công ${res.event.name || res.event.length} sự kiện mới`,
 					showConfirmButton: false,
 					timer: 2000,
 					target: 'body',
@@ -59,7 +74,7 @@ export default function ModalAddEvent({ isOpen, handleClose, addNewEventState })
 					left: '50%',
 					transform: 'translate(-50%, -50%)',
 					width: 600,
-					height: 'calc(100vh - 300px)',
+					height: 'calc(100% - 200px)',
 					bgcolor: 'white',
 					boxShadow: 24,
 				}}
@@ -185,6 +200,38 @@ export default function ModalAddEvent({ isOpen, handleClose, addNewEventState })
 								</Grid>
 							</>
 						)}
+						<Grid item xs={12} md={12} sm={12} lg={12}>
+							<FormControl component="fieldset">
+								<FormLabel component="legend">Lặp lại: </FormLabel>
+								<RadioGroup
+									row
+									aria-label="repeat-event"
+									name="controlled-radio-buttons-reapeat-event"
+									value={repeatEvent}
+									onChange={(e) => {
+										setRepeatEvent(e.target.value);
+										setValue('repeatEvent', e.target.value);
+									}}
+								>
+									<FormControlLabel
+										value={1}
+										control={<Radio />}
+										label="Hằng ngày"
+									/>
+									<FormControlLabel
+										value={7}
+										control={<Radio />}
+										label="Hằng tuần"
+									/>
+									<FormControlLabel
+										value={30}
+										control={<Radio />}
+										label="Hằng tháng"
+									/>
+									<FormControlLabel value={0} control={<Radio />} label="None" />
+								</RadioGroup>
+							</FormControl>
+						</Grid>
 					</Grid>
 					<Box
 						sx={{

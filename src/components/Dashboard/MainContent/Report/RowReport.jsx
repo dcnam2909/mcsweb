@@ -1,4 +1,4 @@
-import { Button, TableCell, TableRow, TextField } from '@mui/material';
+import { Button, TableCell, TableRow } from '@mui/material';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { getReport } from '../../../../api/eventApi';
@@ -15,6 +15,7 @@ export default function RowReport({ event, user }) {
 
 	useEffect(() => {
 		getReport(event._id).then((res) => setReport(res.result));
+		return () => setReport(null);
 	}, [event._id]);
 	return (
 		<TableRow hover role="checkbox" tabIndex={-1}>
@@ -22,12 +23,16 @@ export default function RowReport({ event, user }) {
 			<TableCell align="left">{event.location}</TableCell>
 			<TableCell align="center">{format(new Date(event.dateEvent), 'dd/MM/yyyy')}</TableCell>
 			<TableCell align="center">
-				{event.typeEvent !== 'public'
-					? event.listVisitersCheckin.filter((el) => el.isCheckin === false).length
-					: 'N/A'}
+				<b style={{ color: 'red', fontSize: '18px' }}>
+					{event.typeEvent !== 'public'
+						? event.listVisitersCheckin.filter((el) => el.isCheckin === false).length
+						: 'N/A'}
+				</b>
 			</TableCell>
 			<TableCell align="center">
-				{event.listVisitersCheckin.filter((el) => el.isCheckin === true).length}
+				<b style={{ color: 'red', fontSize: '18px' }}>
+					{event.listVisitersCheckin.filter((el) => el.isCheckin === true).length}
+				</b>
 			</TableCell>
 			<TableCell align="center">
 				<Button

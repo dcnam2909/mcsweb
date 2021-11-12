@@ -7,10 +7,12 @@ import SignIn from '../pages/Auth/SignIn';
 import SignUp from '../pages/Auth/SignUp';
 import { useContext } from 'react';
 import { UserContext } from '../config/UserContext';
-import AdminComponent from '../components/Dashboard/MainContent/Admin';
-import EventListComponent from '../components/Dashboard/MainContent/EventList';
+import ListEvent from '../components/Dashboard/MainContent/ListEvent/ListEvent';
 import AgentComponent from '../components/Dashboard/MainContent/Agent/Agent';
 import ReportComponent from '../components/Dashboard/MainContent/Report/Report';
+import VisiterManager from '../components/Dashboard/MainContent/VisiterManager/VisiterManager';
+import NotFoundPage from '../pages/NotFoundPage';
+import GroupVisiter from '../components/Dashboard/MainContent/GroupVisiter/GroupVisiter';
 function AppRoute() {
 	const [user] = useContext(UserContext);
 	const checkRoles = (user, ...roles) => {
@@ -20,6 +22,9 @@ function AppRoute() {
 
 	const isAgent = () => {
 		return user.role === 'Agent';
+	};
+	const isAdmin = () => {
+		return user.role === 'Admin';
 	};
 	return (
 		<Switch>
@@ -58,14 +63,19 @@ function AppRoute() {
 			<PrivateRoute
 				path="/list-event"
 				auth={checkRoles(user, 'Visiter')}
-				component={EventListComponent}
+				component={ListEvent}
 			/>
 			<PrivateRoute
-				path="/admin"
-				auth={checkRoles(user, 'Admin')}
-				component={AdminComponent}
+				path="/visiter-manager"
+				auth={checkRoles(user, 'Admin', 'Manager')}
+				component={() => <VisiterManager isAdmin={isAdmin()} />}
 			/>
-			<Route path="*" render={() => <h1>ERROR 404!</h1>} />
+			<PrivateRoute
+				path="/group-visiter"
+				auth={checkRoles(user, 'Manager')}
+				component={() => <GroupVisiter />}
+			/>
+			<Route path="*" render={() => <NotFoundPage />} />
 		</Switch>
 	);
 }

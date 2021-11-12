@@ -42,7 +42,7 @@ export default function AgentComponent({ isAgent }) {
 			setListAgents([]);
 			setEventsFilter([]);
 		};
-	}, [isAgent]);	
+	}, [isAgent]);
 	useEffect(() => {
 		if (date === null) setEventsFilter(events);
 		else
@@ -122,7 +122,7 @@ export default function AgentComponent({ isAgent }) {
 								height: '100%',
 							}}
 						>
-							<TableContainer sx={{ maxHeight: '100vh', marginTop: 5 }}>
+							<TableContainer sx={{ maxHeight: '100vh'}}>
 								<Table stickyHeader aria-label="sticky table">
 									<TableHead>
 										<TableRow>

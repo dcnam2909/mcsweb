@@ -1,5 +1,4 @@
 import {
-	Button,
 	Card,
 	CardContent,
 	Container,
@@ -10,10 +9,8 @@ import {
 	Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import { useEffect, useState } from 'react';
-import { addByGroup, addVisiters, getOwnerEvent } from '../../../../api/eventApi';
-import { deleteEvent, updateEvent } from '../../../../api/eventApi';
-import { getAllVisisters, getGroup } from '../../../../api/userApi';
+import { useContext, useEffect, useState } from 'react';
+import { getAllEvents } from '../../../../api/eventApi';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -24,29 +21,22 @@ import TableRow from '@mui/material/TableRow';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-import RowEvent from './RowEvent';
 import enLocale from 'date-fns/locale/en-US';
-import ModalAddEvent from './ModalAddEvent';
 import Swal from 'sweetalert2';
-function EventManagerComponent() {
+import RowListEvent from './RowListEvent';
+import { UserContext } from '../../../../config/UserContext';
+import { registerToEvent, removeToEvent } from '../../../../api/eventApi';
+export default function ListEvent({ children }) {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [date, setDate] = useState(null);
 	const [events, setEvents] = useState([]);
 	const [eventsFilter, setEventsFilter] = useState([]);
-	const [modalAddEvent, setModalAddEvent] = useState(false);
-	const [listUsers, setListUsers] = useState([]);
-	const [groupVisiter, setGroupVisiter] = useState([]);
-	const handleOpenModalAddEvent = () => setModalAddEvent(true);
-	const handleCloseModalAddEvent = () => setModalAddEvent(false);
+	const [user] = useContext(UserContext);
 	useEffect(() => {
-		document.title = 'Quản lý sự kiện';
-		getOwnerEvent().then((res) => setEvents(res.event));
-		getAllVisisters().then((res) => setListUsers(res.users));
-		getGroup().then((res) => setGroupVisiter(res.groups));
+		document.title = 'Các sự kiện hiện có';
+		getAllEvents().then((res) => setEvents(res.event));
 		return () => {
-			setGroupVisiter([]);
-			setListUsers([]);
 			setEvents([]);
 			setEventsFilter([]);
 		};
@@ -71,19 +61,17 @@ function EventManagerComponent() {
 		setPage(0);
 	};
 
-	const addNewEventState = (event) => {
-		if (typeof event === typeof []) {
-			setEvents(events.concat(event));
-		} else setEvents([...events, event]);
-	};
-	const handleUpdateEvent = (eventUpdate, dataUpdate) => {
-		updateEvent(eventUpdate._id, dataUpdate)
+	const handleRegisterToEvent = (event) => {
+		registerToEvent(event._id)
 			.then((res) => {
-				getOwnerEvent().then((res) => setEvents(res.event));
+				let eventsCopy = [...events];
+				const index = events.findIndex((el) => el._id === event._id);
+				eventsCopy[index] = Object.assign(eventsCopy[index], res.event);
+				setEvents(eventsCopy);
 				Swal.fire({
 					position: 'center',
 					icon: 'success',
-					title: `Đã thay đổi thành công sự kiện ${eventUpdate.name}`,
+					title: `Đã đăng ký tham gia sự kiện ${event.name}`,
 					showConfirmButton: false,
 					timer: 2000,
 					target: 'body',
@@ -93,7 +81,7 @@ function EventManagerComponent() {
 				Swal.fire({
 					position: 'center',
 					icon: 'error',
-					title: `Có lỗi xảy ra khi thay đổi sự kiện ${eventUpdate.name}! Vui lòng thử lại`,
+					title: `Có lỗi xảy ra khi đăng ký tham gia sự kiện ${event.name}`,
 					showConfirmButton: false,
 					timer: 2000,
 					target: 'body',
@@ -101,51 +89,17 @@ function EventManagerComponent() {
 			});
 	};
 
-	const handleDeleteEvent = (eventDelete) => {
-		Swal.fire({
-			title: 'Bạn có chắc muốn xóa sự kiện này ?',
-			text: 'Hành động này không thể quay lại, bạn có chắc không?',
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonColor: '#1976d2',
-			cancelButtonColor: '#d32f2f',
-			confirmButtonText: 'Đồng ý',
-			cancelButtonText: 'Hủy',
-		}).then((result) => {
-			if (result.isConfirmed) {
-				deleteEvent(eventDelete._id)
-					.then((res) => {
-						getOwnerEvent().then((res) => setEvents(res.event));
-						Swal.fire({
-							position: 'center',
-							icon: 'success',
-							title: `Đã xóa sự kiện ${eventDelete.name}`,
-							showConfirmButton: false,
-							timer: 2000,
-							target: 'body',
-						});
-					})
-					.catch((err) => {
-						Swal.fire({
-							position: 'center',
-							icon: 'error',
-							title: `Có lỗi xảy ra khi xóa sự kiện ${eventDelete.name}! Vui lòng thử lại`,
-							showConfirmButton: false,
-							timer: 2000,
-							target: 'body',
-						});
-					});
-			}
-		});
-	};
-	const handleAddVisiter = (eventUpdate, listVisiter) => {
-		addVisiters(eventUpdate._id, listVisiter)
+	const handleRemoveToEvent = (event) => {
+		removeToEvent(event._id)
 			.then((res) => {
-				getOwnerEvent().then((res) => setEvents(res.event));
+				let eventsCopy = [...events];
+				const index = events.findIndex((el) => el._id === event._id);
+				eventsCopy[index] = Object.assign(eventsCopy[index], res.event);
+				setEvents(eventsCopy);
 				Swal.fire({
 					position: 'center',
 					icon: 'success',
-					title: `Đã thêm thành công ${listVisiter.length} người vào sự kiện ${eventUpdate.name}`,
+					title: `Đã hủy đăng ký tham gia sự kiện ${event.name}`,
 					showConfirmButton: false,
 					timer: 2000,
 					target: 'body',
@@ -155,38 +109,13 @@ function EventManagerComponent() {
 				Swal.fire({
 					position: 'center',
 					icon: 'error',
-					title: `Có lỗi xảy ra khi thêm người tham dự sự kiện ${eventUpdate.name}! Vui lòng thử lại`,
+					title: `Có lỗi xảy ra khi hủy đăng ký tham gia sự kiện ${event.name}`,
 					showConfirmButton: false,
 					timer: 2000,
 					target: 'body',
 				});
 			});
 	};
-	const handleAddByGroup = (idEvent, idGroup) => {
-		addByGroup(idEvent._id, idGroup)
-			.then((res) => {
-				getOwnerEvent().then((res) => setEvents(res.event));
-				Swal.fire({
-					position: 'center',
-					icon: 'success',
-					title: `Đã thêm thành công ${res.event.listVisitersCheckin.length} người vào sự kiện ${res.event.name}`,
-					showConfirmButton: false,
-					timer: 2000,
-					target: 'body',
-				});
-			})
-			.catch((err) => {
-				Swal.fire({
-					position: 'center',
-					icon: 'error',
-					title: `Có lỗi xảy ra khi thêm người tham dự sự kiện ${idEvent.name}! Vui lòng thử lại`,
-					showConfirmButton: false,
-					timer: 2000,
-					target: 'body',
-				});
-			});
-	};
-
 	return (
 		<Box
 			component="main"
@@ -211,14 +140,14 @@ function EventManagerComponent() {
 			>
 				<CardContent>
 					<Typography variant="h5" component="div" sx={{ color: 'white' }}>
-						Quản lý sự kiện
+						Danh sách sự kiện hiện có
 					</Typography>
 					<Typography sx={{ fontSize: 14 }} color="white" gutterBottom>
-						Tìm kiếm, thay đổi, thêm mới, xóa sự kiện
+						Tham gia sự kiện
 					</Typography>
 				</CardContent>
 			</Card>
-			<Container maxWidth="xxl" sx={{ mb: 4 }}>
+			<Container maxWidth="xl" sx={{ mb: 4 }}>
 				<Grid container spacing={3}>
 					<Grid item xs={12} md={12} lg={12}>
 						<Paper
@@ -235,22 +164,6 @@ function EventManagerComponent() {
 								<Table stickyHeader aria-label="sticky table">
 									<TableHead>
 										<TableRow>
-											<TableCell colSpan={1} align="left" sx={{ p: 0 }}>
-												<Button
-													variant="contained"
-													color="warning"
-													onClick={handleOpenModalAddEvent}
-												>
-													Thêm sự kiện mới
-												</Button>
-												{modalAddEvent && (
-													<ModalAddEvent
-														isOpen={modalAddEvent}
-														handleClose={handleCloseModalAddEvent}
-														addNewEventState={addNewEventState}
-													/>
-												)}
-											</TableCell>
 											<TableCell colSpan={7}>
 												<LocalizationProvider
 													dateAdapter={AdapterDateFns}
@@ -346,12 +259,12 @@ function EventManagerComponent() {
 											<TableCell
 												align="center"
 												style={{
-													minWidth: '260px',
+													minWidth: '100px',
 													backgroundColor: '#1976d2',
 													color: 'white',
 												}}
 											>
-												<b>Hành động</b>
+												<b>Đăng ký tham gia</b>
 											</TableCell>
 										</TableRow>
 									</TableHead>
@@ -368,15 +281,14 @@ function EventManagerComponent() {
 											)
 											?.map((event) => {
 												return (
-													<RowEvent
+													<RowListEvent
 														event={event}
-														users={listUsers}
-														groupVisiter={groupVisiter}
 														key={event._id}
-														handleDeleteEvent={handleDeleteEvent}
-														handleUpdateEvent={handleUpdateEvent}
-														handleAddVisiter={handleAddVisiter}
-														handleAddByGroup={handleAddByGroup}
+														user={user}
+														handleRegisterToEvent={
+															handleRegisterToEvent
+														}
+														handleRemoveToEvent={handleRemoveToEvent}
 													/>
 												);
 											})}
@@ -396,8 +308,7 @@ function EventManagerComponent() {
 					</Grid>
 				</Grid>
 			</Container>
+			{children}
 		</Box>
 	);
 }
-
-export default EventManagerComponent;

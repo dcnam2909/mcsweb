@@ -6,6 +6,7 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import EventIcon from '@mui/icons-material/Event';
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
+import GroupIcon from '@mui/icons-material/Group';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from '../../config/UserContext';
@@ -62,13 +63,26 @@ function LeftList() {
 				</NavLink>
 			)}
 
-			{checkRoles('Admin') && (
-				<NavLink to="/admin">
-					<ListItem button selected={location.pathname === '/admin'}>
+			{checkRoles('Admin', 'Manager') && (
+				<NavLink
+					to="/visiter-manager"
+					style={{ textDecoration: 'none', color: '#000000DE' }}
+				>
+					<ListItem button selected={location.pathname === '/visiter-manager'}>
 						<ListItemIcon>
 							<AdminPanelSettingsIcon />
 						</ListItemIcon>
-						<ListItemText primary="Admin" />
+						<ListItemText primary="Quản lý người dùng" />
+					</ListItem>
+				</NavLink>
+			)}
+			{checkRoles('Manager') && (
+				<NavLink to="/group-visiter" style={{ textDecoration: 'none', color: '#000000DE' }}>
+					<ListItem button selected={location.pathname === '/group-visiter'}>
+						<ListItemIcon>
+							<GroupIcon />
+						</ListItemIcon>
+						<ListItemText primary="Quản lý nhóm" />
 					</ListItem>
 				</NavLink>
 			)}

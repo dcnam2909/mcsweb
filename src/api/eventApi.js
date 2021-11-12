@@ -9,6 +9,13 @@ export const getOwnerEvent = () =>
 		},
 	});
 
+export const getAllEvents = () =>
+	callApi.get('/event', {
+		headers: {
+			Authorization: 'Bearer ' + token,
+		},
+	});
+
 export const addNewEvent = (data) =>
 	callApi.post('/manager/event', data, {
 		headers: {
@@ -49,6 +56,16 @@ export const addVisiters = (id, data) =>
 		},
 	);
 
+export const addByGroup = (idEvent, idGroup) =>
+	callApi.patch(
+		`/manager/event/${idEvent}/addByGroup/${idGroup}`,
+		{},
+		{
+			headers: {
+				Authorization: 'Bearer ' + token,
+			},
+		},
+	);
 export const setAgent = (idEvent, idAgent) =>
 	callApi.put(
 		`/manager/event/${idEvent}/setAgent/${idAgent}`,
@@ -77,3 +94,25 @@ export const getReport = (id) =>
 			Authorization: 'Bearer ' + token,
 		},
 	});
+
+export const registerToEvent = (idEvent) =>
+	callApi.post(
+		`/event/${idEvent}/registerToEvent`,
+		{},
+		{
+			headers: {
+				Authorization: 'Bearer ' + token,
+			},
+		},
+	);
+
+export const removeToEvent = (idEvent) =>
+	callApi.post(
+		`/event/${idEvent}/removeToEvent`,
+		{},
+		{
+			headers: {
+				Authorization: 'Bearer ' + token,
+			},
+		},
+	);

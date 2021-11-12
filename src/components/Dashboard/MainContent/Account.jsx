@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import { updateInfo, updatePassword } from '../../../api/userApi';
 import { UserContext } from '../../../config/UserContext';
 import Swal from 'sweetalert2';
-function AccountComponent({ children }) {
+function AccountComponent() {
 	const {
 		register,
 		handleSubmit,
@@ -215,7 +215,6 @@ function AccountComponent({ children }) {
 					</Grid>
 				</Grid>
 			</Container>
-			{children}
 		</Box>
 	);
 }

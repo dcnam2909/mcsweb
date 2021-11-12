@@ -11,7 +11,7 @@ function PublicRoute({ auth, component: Component, ...rest }) {
 			case 'Visiter':
 				return '/list-event';
 			case 'Admin':
-				return '/admin';
+				return '/visiter-manager';
 			default:
 				break;
 		}
