@@ -96,23 +96,15 @@ export const getReport = (id) =>
 	});
 
 export const registerToEvent = (idEvent) =>
-	callApi.post(
-		`/event/${idEvent}/registerToEvent`,
-		{},
-		{
-			headers: {
-				Authorization: 'Bearer ' + token,
-			},
+	callApi.get(`/event/${idEvent}/registerToEvent`, {
+		headers: {
+			Authorization: 'Bearer ' + token,
 		},
-	);
+	});
 
 export const removeToEvent = (idEvent) =>
-	callApi.post(
-		`/event/${idEvent}/removeToEvent`,
-		{},
-		{
-			headers: {
-				Authorization: 'Bearer ' + token,
-			},
+	callApi.get(`/event/${idEvent}/removeToEvent`, {
+		headers: {
+			Authorization: 'Bearer ' + token,
 		},
-	);
+	});
