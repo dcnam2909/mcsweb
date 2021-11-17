@@ -1,8 +1,9 @@
 import { Button, TableCell, TableRow } from '@mui/material';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
-import { getReport } from '../../../../api/eventApi';
+import { getReport, getReportFile } from '../../../../api/eventApi';
 import ModalReport from './ModalReport';
+import { saveAs } from 'file-saver';
 export default function RowReport({ event, user }) {
 	const [modalReport, setModalReport] = useState(false);
 	const [report, setReport] = useState(null);
@@ -11,6 +12,14 @@ export default function RowReport({ event, user }) {
 	};
 	const handleCloseModalReport = () => {
 		setModalReport(false);
+	};
+
+	const handleGetReportFile = async () => {
+		const file = await getReportFile(event._id);
+		var blob = new Blob([file], {
+			type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+		});
+		saveAs(blob, `report-${event.name}.xlsx`);
 	};
 
 	useEffect(() => {
@@ -49,6 +58,7 @@ export default function RowReport({ event, user }) {
 						report={report}
 						modalReport={modalReport}
 						handleCloseModalReport={handleCloseModalReport}
+						handleGetReportFile={handleGetReportFile}
 					/>
 				)}
 			</TableCell>

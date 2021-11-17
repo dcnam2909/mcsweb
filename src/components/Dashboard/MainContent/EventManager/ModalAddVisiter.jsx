@@ -1,7 +1,7 @@
 import {
 	Button,
 	Checkbox,
-	// Fab,
+	Fab,
 	IconButton,
 	InputBase,
 	List,
@@ -22,7 +22,8 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-// import AddIcon from '@mui/icons-material/Add';
+import AddIcon from '@mui/icons-material/Add';
+import { addByFile } from '../../../../api/eventApi';
 export default function ModalAddVisiter({
 	event,
 	users,
@@ -34,7 +35,7 @@ export default function ModalAddVisiter({
 }) {
 	const [checked, setChecked] = useState(
 		event.listVisitersCheckin.reduce((prevUser, curUser) => {
-			prevUser.push(curUser.visiter);
+			prevUser.push(curUser.visiter._id);
 			return prevUser;
 		}, []),
 	);
@@ -42,7 +43,7 @@ export default function ModalAddVisiter({
 	const [tabChange, setTabChange] = useState('1');
 	const [searchFillter, setSearchFillter] = useState('');
 	const [searchFillterGroup, setSearchFillterGroup] = useState('');
-	// const [file, setFile] = useState();
+	const [file, setFile] = useState();
 	const handleFillter = (e) => setSearchFillter(e.target.value);
 	const handleFillterDebounce = debounce(500, handleFillter);
 	const handleFillterGroup = (e) => setSearchFillterGroup(e.target.value);
@@ -66,10 +67,16 @@ export default function ModalAddVisiter({
 	const handleTabChange = (event, newValue) => {
 		setTabChange(newValue);
 	};
-	// const handleChangeFile = (e) => {
-	// 	const file = e.target.files[0];
-	// 	setFile(file);
-	// };
+	const handleChangeFile = (e) => {
+		const file = e.target.files[0];
+		setFile(file);
+	};
+
+	const handleAddByFile = (event, file) => {
+		const formData = new FormData();
+		formData.append('file', file);
+		addByFile(event._id, formData);
+	};
 	return (
 		<Modal
 			open={isOpenAddVisiter}
@@ -264,7 +271,7 @@ export default function ModalAddVisiter({
 										<SearchIcon />
 									</IconButton>
 								</Paper>
-								{/* <Box sx={{ boxShadow: 2, mb: 1, ml: 2 }}>
+								<Box sx={{ boxShadow: 2, mb: 1, ml: 2 }}>
 									<label htmlFor="upload-photo">
 										<input
 											hidden
@@ -287,7 +294,7 @@ export default function ModalAddVisiter({
 											{file?.name}
 										</Typography>
 									</label>
-								</Box> */}
+								</Box>
 							</Box>
 							<Box>
 								<Box>
@@ -374,8 +381,9 @@ export default function ModalAddVisiter({
 											color="success"
 											type="button"
 											onClick={() => {
-												handleCloseAddVisiter();
-												handleAddByGroup(event, checkedGroup);
+												// handleCloseAddVisiter();
+												if (!file) handleAddByGroup(event, checkedGroup);
+												else handleAddByFile(event, file);
 											}}
 										>
 											Thêm

@@ -104,3 +104,10 @@ export const addToGroup = (id, data) =>
 			Authorization: 'Bearer ' + token,
 		},
 	});
+
+export const getEventReg = () =>
+	callApi.get(`/user/event`, {
+		headers: {
+			Authorization: 'Bearer ' + token,
+		},
+	});

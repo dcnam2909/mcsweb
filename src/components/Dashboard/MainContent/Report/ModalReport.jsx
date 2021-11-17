@@ -9,13 +9,18 @@ import {
 	TableHead,
 	TableBody,
 	Paper,
-	// Button,
+	Button,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-export default function ModalReport({ report, modalReport, handleCloseModalReport }) {
+export default function ModalReport({
+	report,
+	modalReport,
+	handleCloseModalReport,
+	handleGetReportFile,
+}) {
 	return (
 		<Modal
 			open={modalReport}
@@ -74,7 +79,7 @@ export default function ModalReport({ report, modalReport, handleCloseModalRepor
 									</TableRow>
 								</TableHead>
 								<TableBody>
-									{report.listCheckin.map((item) => (
+									{report.listCheckin?.map((item) => (
 										<TableRow
 											key={item._id}
 											sx={{
@@ -124,14 +129,14 @@ export default function ModalReport({ report, modalReport, handleCloseModalRepor
 								<b>Tổng số người đã check in:</b>{' '}
 								{report.listCheckin.filter((item) => item.isCheckin).length}
 							</Typography>
-							{/* <Button
+							<Button
 								variant="contained"
 								color="success"
 								sx={{ mt: 4 }}
-								onClick={handleCreateExcel}
+								onClick={() => handleGetReportFile()}
 							>
 								DOWNLOAD EXCEL
-							</Button> */}
+							</Button>
 						</Paper>
 					</Grid>
 				</Grid>

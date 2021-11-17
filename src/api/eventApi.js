@@ -66,6 +66,13 @@ export const addByGroup = (idEvent, idGroup) =>
 			},
 		},
 	);
+
+export const addByFile = (idEvent, data) =>
+	callApi.post(`/manager/event/${idEvent}/addByFile`, data, {
+		headers: {
+			Authorization: 'Bearer ' + token,
+		},
+	});
 export const setAgent = (idEvent, idAgent) =>
 	callApi.put(
 		`/manager/event/${idEvent}/setAgent/${idAgent}`,
@@ -90,6 +97,14 @@ export const removeAgent = (idEvent, idAgent) =>
 
 export const getReport = (id) =>
 	callApi.get(`/event/${id}/report`, {
+		headers: {
+			Authorization: 'Bearer ' + token,
+		},
+	});
+
+export const getReportFile = (id) =>
+	callApi.get(`/event/${id}/reportFile`, {
+		responseType: 'arraybuffer',
 		headers: {
 			Authorization: 'Bearer ' + token,
 		},

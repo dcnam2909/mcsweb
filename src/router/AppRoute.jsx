@@ -13,6 +13,7 @@ import ReportComponent from '../components/Dashboard/MainContent/Report/Report';
 import VisiterManager from '../components/Dashboard/MainContent/VisiterManager/VisiterManager';
 import NotFoundPage from '../pages/NotFoundPage';
 import GroupVisiter from '../components/Dashboard/MainContent/GroupVisiter/GroupVisiter';
+import ListEventReg from '../components/Dashboard/MainContent/ListEventReg/ListEventReg';
 function AppRoute() {
 	const [user] = useContext(UserContext);
 	const checkRoles = (user, ...roles) => {
@@ -64,6 +65,11 @@ function AppRoute() {
 				path="/list-event"
 				auth={checkRoles(user, 'Visiter')}
 				component={ListEvent}
+			/>
+			<PrivateRoute
+				path="/list-reg-event"
+				auth={checkRoles(user, 'Visiter')}
+				component={ListEventReg}
 			/>
 			<PrivateRoute
 				path="/visiter-manager"

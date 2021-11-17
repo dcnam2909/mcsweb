@@ -2,6 +2,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import EventIcon from '@mui/icons-material/Event';
 import QrCodeIcon from '@mui/icons-material/QrCode';
@@ -59,6 +60,20 @@ function LeftList() {
 							<EventIcon />
 						</ListItemIcon>
 						<ListItemText primary="Danh sách sự kiện" />
+					</ListItem>
+				</NavLink>
+			)}
+
+			{checkRoles('Visiter') && (
+				<NavLink
+					to="/list-reg-event"
+					style={{ textDecoration: 'none', color: '#000000DE' }}
+				>
+					<ListItem button selected={location.pathname === '/list-reg-event'}>
+						<ListItemIcon>
+							<EventAvailableIcon />
+						</ListItemIcon>
+						<ListItemText primary="Sự kiện đã đăng ký" />
 					</ListItem>
 				</NavLink>
 			)}
