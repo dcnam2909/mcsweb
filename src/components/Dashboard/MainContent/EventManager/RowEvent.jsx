@@ -13,6 +13,7 @@ export default function RowEvent({
 	handleUpdateEvent,
 	handleAddVisiter,
 	handleAddByGroup,
+	handleAddByFile,
 }) {
 	const [modalEditEvent, setModalEditEvent] = useState(false);
 	const [modalAddVisiter, setModalAddVisiter] = useState(false);
@@ -82,6 +83,7 @@ export default function RowEvent({
 								handleCloseAddVisiter={handleCloseModalAddVisiter}
 								handleAddVisiter={handleAddVisiter}
 								handleAddByGroup={handleAddByGroup}
+								handleAddByFile={handleAddByFile}
 							/>
 						)}
 					</>

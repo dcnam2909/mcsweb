@@ -8,7 +8,7 @@ export default function RowListEventReg({ event }) {
 			<TableCell align="left">{event.location}</TableCell>
 			<TableCell align="center">{format(new Date(event.dateEvent), 'dd/MM/yyyy')}</TableCell>
 			<TableCell align="center">
-				{event.typeEvent === 'public' && 'Sự kiện công khai'}
+				{event.typeEvent === 'private' && 'Sự kiện công khai'}
 				{event.typeEvent === 'restricted' && 'Sự kiện hạn chế'}
 			</TableCell>
 			<TableCell align="center">

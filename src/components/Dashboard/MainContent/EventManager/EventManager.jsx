@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { useEffect, useState } from 'react';
-import { addByGroup, addVisiters, getOwnerEvent } from '../../../../api/eventApi';
+import { addByGroup, addByFile, addVisiters, getOwnerEvent } from '../../../../api/eventApi';
 import { deleteEvent, updateEvent } from '../../../../api/eventApi';
 import { getAllVisisters, getGroup } from '../../../../api/userApi';
 import Table from '@mui/material/Table';
@@ -138,14 +138,17 @@ function EventManagerComponent() {
 			}
 		});
 	};
-	const handleAddVisiter = (eventUpdate, listVisiter) => {
+	const handleAddVisiter = (eventUpdate, listVisiter = []) => {
 		addVisiters(eventUpdate._id, listVisiter)
 			.then((res) => {
 				getOwnerEvent().then((res) => setEvents(res.event));
 				Swal.fire({
 					position: 'center',
 					icon: 'success',
-					title: `Đã thêm thành công ${listVisiter.length} người vào sự kiện ${eventUpdate.name}`,
+					title:
+						listVisiter.length > 0
+							? `Đã thêm thành công ${listVisiter.length} người vào sự kiện ${eventUpdate.name}`
+							: `Đã xóa hết người tham gia sự kiện`,
 					showConfirmButton: false,
 					timer: 2000,
 					target: 'body',
@@ -180,6 +183,33 @@ function EventManagerComponent() {
 					position: 'center',
 					icon: 'error',
 					title: `Có lỗi xảy ra khi thêm người tham dự sự kiện ${idEvent.name}! Vui lòng thử lại`,
+					showConfirmButton: false,
+					timer: 2000,
+					target: 'body',
+				});
+			});
+	};
+
+	const handleAddByFile = (event, file) => {
+		const formData = new FormData();
+		formData.append('file', file);
+		addByFile(event._id, formData)
+			.then((res) => {
+				getOwnerEvent().then((res) => setEvents(res.event));
+				Swal.fire({
+					position: 'center',
+					icon: 'success',
+					title: `Đã thêm thành công ${res.event.listVisitersCheckin.length} người vào sự kiện ${res.event.name}`,
+					showConfirmButton: false,
+					timer: 2000,
+					target: 'body',
+				});
+			})
+			.catch((err) => {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: `Có lỗi xảy ra khi thêm người tham dự sự kiện ${event.name}! Vui lòng thử lại`,
 					showConfirmButton: false,
 					timer: 2000,
 					target: 'body',
@@ -377,6 +407,7 @@ function EventManagerComponent() {
 														handleUpdateEvent={handleUpdateEvent}
 														handleAddVisiter={handleAddVisiter}
 														handleAddByGroup={handleAddByGroup}
+														handleAddByFile={handleAddByFile}
 													/>
 												);
 											})}

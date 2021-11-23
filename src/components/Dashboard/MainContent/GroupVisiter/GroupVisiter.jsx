@@ -38,7 +38,7 @@ export default function GroupVisiter({ isAdmin }) {
 	};
 	const handleFillterDebounce = debounce(500, handleFillter);
 	useEffect(() => {
-		document.title = 'Quản lý người dùng';
+		document.title = 'Quản lý nhóm người dùng';
 		getGroup().then((res) => setGroups(res.groups));
 		return () => {
 			setGroups([]);

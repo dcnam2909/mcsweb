@@ -23,7 +23,6 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import AddIcon from '@mui/icons-material/Add';
-import { addByFile } from '../../../../api/eventApi';
 export default function ModalAddVisiter({
 	event,
 	users,
@@ -32,6 +31,7 @@ export default function ModalAddVisiter({
 	handleCloseAddVisiter,
 	handleAddVisiter,
 	handleAddByGroup,
+	handleAddByFile,
 }) {
 	const [checked, setChecked] = useState(
 		event.listVisitersCheckin.reduce((prevUser, curUser) => {
@@ -72,11 +72,6 @@ export default function ModalAddVisiter({
 		setFile(file);
 	};
 
-	const handleAddByFile = (event, file) => {
-		const formData = new FormData();
-		formData.append('file', file);
-		addByFile(event._id, formData);
-	};
 	return (
 		<Modal
 			open={isOpenAddVisiter}
@@ -224,10 +219,8 @@ export default function ModalAddVisiter({
 										color="success"
 										type="button"
 										onClick={(e) => {
-											if (checked.length > 0) {
-												handleCloseAddVisiter();
-												handleAddVisiter(event, checked);
-											} else e.preventDefault();
+											handleCloseAddVisiter();
+											handleAddVisiter(event, checked);
 										}}
 									>
 										Thêm
@@ -381,7 +374,7 @@ export default function ModalAddVisiter({
 											color="success"
 											type="button"
 											onClick={() => {
-												// handleCloseAddVisiter();
+												handleCloseAddVisiter();
 												if (!file) handleAddByGroup(event, checkedGroup);
 												else handleAddByFile(event, file);
 											}}
