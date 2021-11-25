@@ -123,3 +123,18 @@ export const removeToEvent = (idEvent) =>
 			Authorization: 'Bearer ' + token,
 		},
 	});
+
+//Admin
+export const getAllEventAdmin = () =>
+	callApi.get(`/admin/events`, {
+		headers: {
+			Authorization: 'Bearer ' + token,
+		},
+	});
+
+export const deleteEventAdmin = (idEvent) =>
+	callApi.delete(`/admin/events/${idEvent}/deleteEvent`, {
+		headers: {
+			Authorization: 'Bearer ' + token,
+		},
+	});

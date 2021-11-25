@@ -4,6 +4,7 @@ import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import TodayIcon from '@mui/icons-material/Today';
 import EventIcon from '@mui/icons-material/Event';
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
@@ -88,6 +89,19 @@ function LeftList() {
 							<AdminPanelSettingsIcon />
 						</ListItemIcon>
 						<ListItemText primary="Quản lý người dùng" />
+					</ListItem>
+				</NavLink>
+			)}
+			{checkRoles('Admin') && (
+				<NavLink
+					to="/event-admin"
+					style={{ textDecoration: 'none', color: '#000000DE' }}
+				>
+					<ListItem button selected={location.pathname === '/event-admin'}>
+						<ListItemIcon>
+							<TodayIcon />
+						</ListItemIcon>
+						<ListItemText primary="Tất cả sự kiện" />
 					</ListItem>
 				</NavLink>
 			)}

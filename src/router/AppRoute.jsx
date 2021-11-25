@@ -14,6 +14,7 @@ import VisiterManager from '../components/Dashboard/MainContent/VisiterManager/V
 import NotFoundPage from '../pages/NotFoundPage';
 import GroupVisiter from '../components/Dashboard/MainContent/GroupVisiter/GroupVisiter';
 import ListEventReg from '../components/Dashboard/MainContent/ListEventReg/ListEventReg';
+import EventAdmin from '../components/Dashboard/MainContent/EventAdmin/EventAdmin';
 function AppRoute() {
 	const [user] = useContext(UserContext);
 	const checkRoles = (user, ...roles) => {
@@ -75,6 +76,11 @@ function AppRoute() {
 				path="/visiter-manager"
 				auth={checkRoles(user, 'Admin', 'Manager')}
 				component={() => <VisiterManager isAdmin={isAdmin()} />}
+			/>
+			<PrivateRoute
+				path="/event-admin"
+				auth={checkRoles(user, 'Admin')}
+				component={() => <EventAdmin  />}
 			/>
 			<PrivateRoute
 				path="/group-visiter"
