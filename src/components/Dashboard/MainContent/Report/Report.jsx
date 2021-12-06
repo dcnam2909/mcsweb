@@ -79,19 +79,16 @@ export default function ReportComponent() {
 			>
 				<CardContent>
 					<Typography variant="h5" component="div" sx={{ color: 'white' }}>
-						Agent
-					</Typography>
-					<Typography sx={{ fontSize: 14 }} color="white" gutterBottom>
-						Phát QR Code cho sự kiện
+						Report
 					</Typography>
 				</CardContent>
 			</Card>
-			<Container maxWidth="xl" sx={{ mb: 4 }}>
+			<Container maxWidth="xl" sx={{ mb: 1}}>
 				<Grid container spacing={3}>
 					<Grid item xs={12} md={12} lg={12}>
 						<Paper
 							sx={{
-								p: 4,
+								p: 2,
 								pt: 3,
 								pb: 0,
 								display: 'flex',

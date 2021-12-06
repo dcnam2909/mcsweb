@@ -1,5 +1,4 @@
 import { Button, TableCell, TableRow, TextField } from '@mui/material';
-import { format } from 'date-fns';
 import { useState } from 'react';
 import { getQRCode } from '../../../../api/eventApi';
 import ModalQRCode from './ModalQRCode';
@@ -47,14 +46,25 @@ export default function RowAgent({ event, users, handleSetAgent, handleRemoveAge
 		<TableRow hover role="checkbox" tabIndex={-1}>
 			<TableCell align="left">{event.name}</TableCell>
 			<TableCell align="left">{event.location}</TableCell>
-			<TableCell align="center">{format(new Date(event.dateEvent), 'dd/MM/yyyy')}</TableCell>
+			<TableCell align="center">
+				{new Date(event.dateEvent).toLocaleTimeString('vi-VN').split(':')[0] +
+					':' +
+					new Date(event.dateEvent).toLocaleTimeString('vi-VN').split(':')[1] +
+					'\n' +
+					new Date(event.dateEvent).toLocaleDateString('vi-VN')}
+			</TableCell>
 			<TableCell align="center">
 				<TextField
 					sx={{ width: '100px' }}
 					type="number"
 					variant="standard"
 					value={expire}
-					onChange={(e) => setExpire(e.target.value * 1)}
+					onChange={(e) => {
+						if (e.target.value >= 0) {
+							setExpire(e.target.value);
+						}
+						e.preventDefault();
+					}}
 				/>
 				<i>Minute(s)</i>
 			</TableCell>
@@ -87,12 +97,7 @@ export default function RowAgent({ event, users, handleSetAgent, handleRemoveAge
 					sx={{ ml: 2 }}
 					size="medium"
 					onClick={handleOpenModalQRCode}
-					disabled={
-						new Date(event.dateEvent).setHours(0, 0, 0, 0) >
-						new Date().setHours(0, 0, 0, 0)
-							? true
-							: false
-					}
+					disabled={new Date(event.dateEvent) > new Date() ? true : false}
 				>
 					BẮT ĐẦU CHECK-IN
 				</Button>

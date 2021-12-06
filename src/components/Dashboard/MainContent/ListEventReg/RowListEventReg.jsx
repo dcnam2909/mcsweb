@@ -1,21 +1,28 @@
 import { TableCell, TableRow } from '@mui/material';
 
-import { format } from 'date-fns';
-export default function RowListEventReg({ event }) {
+export default function RowListEventReg({ event, user }) {
+	console.log(event);
 	return (
 		<TableRow hover role="checkbox" tabIndex={-1}>
 			<TableCell align="left">{event.name}</TableCell>
 			<TableCell align="left">{event.location}</TableCell>
-			<TableCell align="center">{format(new Date(event.dateEvent), 'dd/MM/yyyy')}</TableCell>
 			<TableCell align="center">
-				{event.typeEvent === 'private' && 'Sự kiện công khai'}
+				{' '}
+				{new Date(event.dateEvent).toLocaleTimeString('vi-VN').split(':')[0] +
+					':' +
+					new Date(event.dateEvent).toLocaleTimeString('vi-VN').split(':')[1] +
+					'\n' +
+					new Date(event.dateEvent).toLocaleDateString('vi-VN')}
+			</TableCell>
+			<TableCell align="center">
+				{event.typeEvent === 'public' && 'Sự kiện công khai'}
+				{event.typeEvent === 'private' && 'Sự kiện riêng '}
 				{event.typeEvent === 'restricted' && 'Sự kiện hạn chế'}
 			</TableCell>
 			<TableCell align="center">
-				{event.openReg ? format(new Date(event.openReg), 'dd/MM/yyyy') : ''}
-			</TableCell>
-			<TableCell align="center">
-				{event.endReg ? format(new Date(event.endReg), 'dd/MM/yyyy') : ''}
+				{Date.now() > new Date(event.dateEvent).getTime() && 'Đã kết thúc'}
+				{Date.now() < new Date(event.dateEvent).getTime() && 'Sắp diễn ra'}
+				{Date.now() === new Date(event.dateEvent).getTime() && 'Đang diễn ra'}
 			</TableCell>
 		</TableRow>
 	);

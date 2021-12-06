@@ -111,3 +111,10 @@ export const getEventReg = () =>
 			Authorization: 'Bearer ' + token,
 		},
 	});
+
+export const addToGroupByFile = (id, data) =>
+	callApi.post(`/user/group/${id}/addByFile`, data, {
+		headers: {
+			Authorization: 'Bearer ' + token,
+		},
+	});

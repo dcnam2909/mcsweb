@@ -13,7 +13,13 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { useEffect, useState } from 'react';
-import { addToGroup, createGroup, deleteGroup, getGroup } from '../../../../api/userApi';
+import {
+	addToGroup,
+	createGroup,
+	deleteGroup,
+	getGroup,
+	addToGroupByFile,
+} from '../../../../api/userApi';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -104,6 +110,34 @@ export default function GroupVisiter({ isAdmin }) {
 			});
 		});
 	};
+
+	const handleAddToGroupByFile = (group, file) => {
+		const formData = new FormData();
+		formData.append('file', file);
+		addToGroupByFile(group._id, formData)
+			.then((res) => {
+				getGroup().then((res) => setGroups(res.groups));
+				Swal.fire({
+					position: 'center',
+					icon: 'success',
+					title: `Thêm thành công người dùng vào nhóm ${group.groupName}`,
+					showConfirmButton: false,
+					timer: 2000,
+					target: 'body',
+				});
+			})
+			.catch((err) => {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: `Có lỗi xảy ra khi thêm người dùng vào nhóm ${group.groupName}! Vui lòng thử lại`,
+					showConfirmButton: false,
+					timer: 2000,
+					target: 'body',
+				});
+			});
+	};
+
 	return (
 		<Box
 			component="main"
@@ -236,6 +270,9 @@ export default function GroupVisiter({ isAdmin }) {
 														key={group._id}
 														handleDeleteGroup={handleDeleteGroup}
 														handleAddToGroup={handleAddToGroup}
+														handleAddToGroupByFile={
+															handleAddToGroupByFile
+														}
 													/>
 												);
 											})}

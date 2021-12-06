@@ -1,9 +1,9 @@
 import axios from 'axios';
 import queryString from 'query-string';
-// const BASE_URL_LOCAL = 'http://localhost:8000/api';
+const BASE_URL_LOCAL = 'http://localhost:8000/api';
 const PRODUCT_URL = 'https://api-mcs-manager.herokuapp.com/api';
 const callApi = axios.create({
-	baseURL: PRODUCT_URL,
+	baseURL: BASE_URL_LOCAL,
 	headers: {
 		'Content-type': 'application/json',
 	},

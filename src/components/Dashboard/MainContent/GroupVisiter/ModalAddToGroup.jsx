@@ -4,6 +4,7 @@ import {
 	IconButton,
 	InputBase,
 	List,
+	Fab,
 	ListItem,
 	ListItemButton,
 	ListItemIcon,
@@ -16,6 +17,7 @@ import { Box } from '@mui/system';
 import { useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import { debounce } from 'throttle-debounce';
+import AddIcon from '@mui/icons-material/Add';
 
 export default function ModalAddToGroup({
 	visiters,
@@ -23,6 +25,7 @@ export default function ModalAddToGroup({
 	modalAddToGroup,
 	handleCloseAddToGroup,
 	handleAddToGroup,
+	handleAddToGroupByFile,
 }) {
 	const [checked, setChecked] = useState(
 		group.users.reduce((prevUser, curUser) => {
@@ -33,6 +36,11 @@ export default function ModalAddToGroup({
 	const [searchFillter, setSearchFillter] = useState('');
 	const handleFillter = (e) => setSearchFillter(e.target.value);
 	const handleFillterDebounce = debounce(500, handleFillter);
+	const [file, setFile] = useState();
+	const handleChangeFile = (e) => {
+		const file = e.target.files[0];
+		setFile(file);
+	};
 	const handleToggle = (value) => () => {
 		const currentIndex = checked.indexOf(value);
 		const newChecked = [...checked];
@@ -81,6 +89,50 @@ export default function ModalAddToGroup({
 					</Typography>
 				</Box>
 				<Box sx={{ width: '100%', p: 2 }}>
+					<Box
+						sx={{
+							boxShadow: 2,
+							mb: 1,
+							display: 'flex',
+							justifyContent: 'space-between',
+							alignItems: 'center',
+						}}
+					>
+						<label htmlFor="upload-photo">
+							<input
+								hidden
+								id="upload-photo"
+								name="upload-photo"
+								type="file"
+								accept=".xlsx"
+								onChange={handleChangeFile}
+							/>
+							<Fab
+								color="secondary"
+								size="small"
+								component="span"
+								aria-label="add"
+								variant="extended"
+							>
+								<AddIcon /> Upload File
+							</Fab>
+							<Typography variant="caption" sx={{ ml: 1 }}>
+								{file?.name}
+							</Typography>
+						</label>
+						<Button
+							variant="contained"
+							color="success"
+							type="button"
+							sx={{ ml: 1 }}
+							onClick={() => {
+								handleCloseAddToGroup();
+								if (file) handleAddToGroupByFile(group, file);
+							}}
+						>
+							Thêm bằng file
+						</Button>
+					</Box>
 					<Paper
 						component="form"
 						sx={{

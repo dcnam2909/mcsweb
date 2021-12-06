@@ -2,7 +2,12 @@ import { Button, TableCell, TableRow } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getAllVisisters } from '../../../../api/userApi';
 import ModalAddToGroup from './ModalAddToGroup';
-export default function RowGroup({ group, handleDeleteGroup, handleAddToGroup }) {
+export default function RowGroup({
+	group,
+	handleDeleteGroup,
+	handleAddToGroup,
+	handleAddToGroupByFile,
+}) {
 	const [modalAddToGroup, setModalAddToGroup] = useState(false);
 	const [visiters, setVisiters] = useState([]);
 
@@ -37,6 +42,7 @@ export default function RowGroup({ group, handleDeleteGroup, handleAddToGroup })
 						modalAddToGroup={modalAddToGroup}
 						handleCloseAddToGroup={handleCloseModalAddToGroup}
 						handleAddToGroup={handleAddToGroup}
+						handleAddToGroupByFile={handleAddToGroupByFile}
 						group={group}
 						visiters={visiters}
 					/>

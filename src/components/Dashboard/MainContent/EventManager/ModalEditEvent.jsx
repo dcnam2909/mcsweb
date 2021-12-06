@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import { useForm } from 'react-hook-form';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
+import DateTimePicker from '@mui/lab/DateTimePicker';
 import enLocale from 'date-fns/locale/en-US';
 import { useState } from 'react';
 
@@ -93,13 +93,13 @@ export default function ModalEditEvent({ event, isOpenEdit, handleCloseEdit, han
 						</Grid>
 						<Grid item xs={12} md={12} sm={12} lg={12}>
 							<LocalizationProvider dateAdapter={AdapterDateFns} locale={enLocale}>
-								<DatePicker
+								<DateTimePicker
 									label="Chọn ngày*"
 									mask="__/__/____"
 									value={dateModal}
 									onChange={(newDate) => {
-										setDateModal(newDate);
-										setValue('dateEvent', newDate);
+										setDateModal(new Date(newDate.setSeconds(0)));
+										setValue('dateEvent', new Date(newDate.setSeconds(0)));
 									}}
 									renderInput={(params) => <TextField {...params} />}
 								/>
@@ -130,13 +130,18 @@ export default function ModalEditEvent({ event, isOpenEdit, handleCloseEdit, han
 										dateAdapter={AdapterDateFns}
 										locale={enLocale}
 									>
-										<DatePicker
+										<DateTimePicker
 											label="Chọn ngày mở đăng ký*"
 											mask="__/__/____"
 											value={dateOpenRegModal}
 											onChange={(newDate) => {
-												setDateOpenRegModal(newDate);
-												setValue('openReg', newDate);
+												setDateOpenRegModal(
+													new Date(newDate.setSeconds(0)),
+												);
+												setValue(
+													'openReg',
+													new Date(newDate.setSeconds(0)),
+												);
 											}}
 											renderInput={(params) => <TextField {...params} />}
 										/>
@@ -147,13 +152,13 @@ export default function ModalEditEvent({ event, isOpenEdit, handleCloseEdit, han
 										dateAdapter={AdapterDateFns}
 										locale={enLocale}
 									>
-										<DatePicker
+										<DateTimePicker
 											label="Chọn ngày kết thúc đăng ký*"
 											mask="__/__/____"
 											value={dateEndRegModal}
 											onChange={(newDate) => {
-												setDateEndRegModal(newDate);
-												setValue('endReg', newDate);
+												setDateEndRegModal(new Date(newDate.setSeconds(0)));
+												setValue('endReg', new Date(newDate.setSeconds(0)));
 											}}
 											renderInput={(params) => <TextField {...params} />}
 										/>

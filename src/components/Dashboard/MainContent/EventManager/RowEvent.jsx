@@ -30,11 +30,11 @@ export default function RowEvent({
 			<TableCell align="left">{event.name}</TableCell>
 			<TableCell align="left">{event.location}</TableCell>
 			<TableCell align="center">
-				{new Date(event.dateEvent).getDate() +
-					'/' +
-					(new Date(event.dateEvent).getMonth() + 1) +
-					'/' +
-					new Date(event.dateEvent).getFullYear()}
+				{new Date(event.dateEvent).toLocaleTimeString('vi-VN').split(':')[0] +
+					':' +
+					new Date(event.dateEvent).toLocaleTimeString('vi-VN').split(':')[1] +
+					'\n' +
+					new Date(event.dateEvent).toLocaleDateString('vi-VN')}
 			</TableCell>
 			<TableCell align="center">
 				{event.typeEvent === 'public' && 'Sự kiện công khai'}
@@ -43,20 +43,20 @@ export default function RowEvent({
 			</TableCell>
 			<TableCell align="center">
 				{event.openReg
-					? new Date(event.openReg).getDate() +
-					  '/' +
-					  (new Date(event.openReg).getMonth() + 1) +
-					  '/' +
-					  new Date(event.openReg).getFullYear()
+					? new Date(event.openReg).toLocaleTimeString('vi-VN').split(':')[0] +
+					  ':' +
+					  new Date(event.openReg).toLocaleTimeString('vi-VN').split(':')[1] +
+					  '\n' +
+					  new Date(event.openReg).toLocaleDateString('vi-VN')
 					: ''}
 			</TableCell>
 			<TableCell align="center">
 				{event.endReg
-					? new Date(event.endReg).getDate() +
-					  '/' +
-					  (new Date(event.endReg).getMonth() + 1) +
-					  '/' +
-					  new Date(event.endReg).getFullYear()
+					? new Date(event.endReg).toLocaleTimeString('vi-VN').split(':')[0] +
+					  ':' +
+					  new Date(event.endReg).toLocaleTimeString('vi-VN').split(':')[1] +
+					  '\n' +
+					  new Date(event.endReg).toLocaleDateString('vi-VN')
 					: ''}
 			</TableCell>
 			<TableCell align="center">

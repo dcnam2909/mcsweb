@@ -1,5 +1,4 @@
 import { Button, TableCell, TableRow } from '@mui/material';
-import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { getReport, getReportFile } from '../../../../api/eventApi';
 import ModalReport from './ModalReport';
@@ -30,7 +29,13 @@ export default function RowReport({ event, user }) {
 		<TableRow hover role="checkbox" tabIndex={-1}>
 			<TableCell align="left">{event.name}</TableCell>
 			<TableCell align="left">{event.location}</TableCell>
-			<TableCell align="center">{format(new Date(event.dateEvent), 'dd/MM/yyyy')}</TableCell>
+			<TableCell align="center">
+				{new Date(event.dateEvent).toLocaleTimeString('vi-VN').split(':')[0] +
+					':' +
+					new Date(event.dateEvent).toLocaleTimeString('vi-VN').split(':')[1] +
+					'\n' +
+					new Date(event.dateEvent).toLocaleDateString('vi-VN')}
+			</TableCell>
 			<TableCell align="center">
 				<b style={{ color: 'red', fontSize: '18px' }}>
 					{event.typeEvent !== 'public'
@@ -50,6 +55,7 @@ export default function RowReport({ event, user }) {
 					sx={{ ml: 2 }}
 					size="medium"
 					onClick={handleOpenModalReport}
+					disabled={Date.now() < new Date(event.dateEvent).getTime()}
 				>
 					GET REPORT
 				</Button>

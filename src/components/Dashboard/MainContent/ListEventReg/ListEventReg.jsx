@@ -9,7 +9,7 @@ import {
 	Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -23,6 +23,7 @@ import DatePicker from '@mui/lab/DatePicker';
 import enLocale from 'date-fns/locale/en-US';
 import RowListEventReg from './RowListEventReg';
 import { getEventReg } from '../../../../api/userApi';
+import { UserContext } from '../../../../config/UserContext';
 
 export default function ListEventReg({ children }) {
 	const [page, setPage] = useState(0);
@@ -30,6 +31,7 @@ export default function ListEventReg({ children }) {
 	const [date, setDate] = useState(null);
 	const [events, setEvents] = useState([]);
 	const [eventsFilter, setEventsFilter] = useState([]);
+	const [user] = useContext(UserContext);
 	useEffect(() => {
 		document.title = 'Các sự kiện đã đăng ký';
 		getEventReg().then((res) => setEvents(res.event));
@@ -82,7 +84,7 @@ export default function ListEventReg({ children }) {
 			>
 				<CardContent>
 					<Typography variant="h5" component="div" sx={{ color: 'white' }}>
-						Danh sách sự đã đăng ký
+						Danh sách sự kiện đã đăng ký
 					</Typography>
 				</CardContent>
 			</Card>
@@ -173,17 +175,7 @@ export default function ListEventReg({ children }) {
 													color: 'white',
 												}}
 											>
-												<b>Mở đăng ký</b>
-											</TableCell>
-											<TableCell
-												align="center"
-												style={{
-													minWidth: '100px',
-													backgroundColor: '#1976d2',
-													color: 'white',
-												}}
-											>
-												<b>Kết thúc đăng ký</b>
+												<b>Trạng thái</b>
 											</TableCell>
 										</TableRow>
 									</TableHead>
@@ -202,6 +194,7 @@ export default function ListEventReg({ children }) {
 												return (
 													<RowListEventReg
 														event={event}
+														user={user}
 														key={event._id}
 													/>
 												);
