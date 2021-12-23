@@ -20,10 +20,12 @@ export default function RowReport({ event, user }) {
 		});
 		saveAs(blob, `report-${event.name}.xlsx`);
 	};
+	useEffect(() => {
+		return () => setReport(null);
+	}, []);
 
 	useEffect(() => {
 		getReport(event._id).then((res) => setReport(res.result));
-		return () => setReport(null);
 	}, [event._id]);
 	return (
 		<TableRow hover role="checkbox" tabIndex={-1}>

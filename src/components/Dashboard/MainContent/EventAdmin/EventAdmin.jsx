@@ -41,15 +41,18 @@ function EventAdmin() {
 	}, []);
 	useEffect(() => {
 		if (date === null) setEventsFilter(events);
-		else
+		else {
 			setEventsFilter(
-				events.filter(
-					(event) =>
-						new Date(event.dateEvent).toDateString() === new Date(date).toDateString(),
-				),
+				events.filter((event) => {
+					return (
+						new Date(event.dateEvent).toDateString() === new Date(date).toDateString()
+					);
+				}),
 			);
+			setPage(0);
+		}
 	}, [date, events]);
-
+	console.log(eventsFilter);
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
 	};

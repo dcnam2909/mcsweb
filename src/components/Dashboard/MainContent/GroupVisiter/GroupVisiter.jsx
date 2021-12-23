@@ -38,6 +38,8 @@ export default function GroupVisiter({ isAdmin }) {
 	const [groups, setGroups] = useState([]);
 	const [newGroup, setNewGroup] = useState('');
 	const [searchFillter, setSearchFillter] = useState('');
+	const [error, setError] = useState('');
+
 	const handleFillter = (e) => {
 		setSearchFillter(e.target.value);
 		setPage(0);
@@ -62,6 +64,7 @@ export default function GroupVisiter({ isAdmin }) {
 	const handleNewGroup = (e) => {
 		if (newGroup.trim() === '') {
 			e.preventDefault();
+			setError('Tên nhóm không được để trống');
 		} else {
 			createGroup({ groupName: newGroup }).then((res) => {
 				setGroups([...groups, res.group]);
@@ -186,6 +189,8 @@ export default function GroupVisiter({ isAdmin }) {
 								<TextField
 									label="Nhập tên nhóm mới"
 									onChange={(e) => setNewGroup(e.target.value)}
+									error={error}
+									helperText={error ? error : ''}
 								/>
 								<Button
 									variant="contained"

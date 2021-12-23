@@ -45,13 +45,15 @@ export default function AgentComponent({ isAgent }) {
 	}, [isAgent]);
 	useEffect(() => {
 		if (date === null) setEventsFilter(events);
-		else
+		else {
 			setEventsFilter(
 				events.filter(
 					(event) =>
 						new Date(event.dateEvent).toDateString() === new Date(date).toDateString(),
 				),
 			);
+			setPage(0);
+		}
 	}, [date, events]);
 
 	const handleSetAgent = (idEvent, idAgent) => {
@@ -122,7 +124,7 @@ export default function AgentComponent({ isAgent }) {
 								height: '100%',
 							}}
 						>
-							<TableContainer sx={{ maxHeight: '100vh'}}>
+							<TableContainer sx={{ maxHeight: '100vh' }}>
 								<Table stickyHeader aria-label="sticky table">
 									<TableHead>
 										<TableRow>

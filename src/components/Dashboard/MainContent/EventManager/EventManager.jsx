@@ -53,13 +53,15 @@ function EventManagerComponent() {
 	}, []);
 	useEffect(() => {
 		if (date === null) setEventsFilter(events);
-		else
+		else {
 			setEventsFilter(
 				events.filter(
 					(event) =>
 						new Date(event.dateEvent).toDateString() === new Date(date).toDateString(),
 				),
 			);
+			setPage(0);
+		}
 	}, [date, events]);
 
 	const handleChangePage = (event, newPage) => {

@@ -51,41 +51,80 @@ export default function VisiterManager({ isAdmin }) {
 	};
 	const handleSetAgent = (idUser) => {
 		setAgent(idUser).then(() => {
-			getAllUsers().then((res) => setListUsers(res.users));
-			Swal.fire({
-				position: 'center',
-				icon: 'success',
-				title: `Set agent success`,
-				showConfirmButton: false,
-				timer: 2000,
-				target: 'body',
-			});
+			getAllUsers()
+				.then((res) => {
+					setListUsers(res.users);
+					Swal.fire({
+						position: 'center',
+						icon: 'success',
+						title: `Cấp quyền thành công cho tài khoản`,
+						showConfirmButton: false,
+						timer: 2000,
+						target: 'body',
+					});
+				})
+				.catch((err) => {
+					Swal.fire({
+						position: 'center',
+						icon: 'error',
+						title: `Có lỗi xảy ra khi cấp quyền cho tài khoản`,
+						showConfirmButton: false,
+						timer: 2000,
+						target: 'body',
+					});
+				});
 		});
 	};
 	const handleSetManager = (idUser) => {
 		setManager(idUser).then(() => {
-			getAllUsers().then((res) => setListUsers(res.users));
-			Swal.fire({
-				position: 'center',
-				icon: 'success',
-				title: `Set manager success`,
-				showConfirmButton: false,
-				timer: 2000,
-				target: 'body',
-			});
+			getAllUsers()
+				.then((res) => {
+					setListUsers(res.users);
+					Swal.fire({
+						position: 'center',
+						icon: 'success',
+						title: `Set manager success`,
+						showConfirmButton: false,
+						timer: 2000,
+						target: 'body',
+					});
+				})
+				.catch((err) => {
+					Swal.fire({
+						position: 'center',
+						icon: 'error',
+						title: `Có lỗi xảy ra khi cấp quyền cho tài khoản`,
+						showConfirmButton: false,
+						timer: 2000,
+						target: 'body',
+					});
+				});
 		});
 	};
 	const handleSetVisiter = (idUser) => {
 		setVisiter(idUser).then(() => {
-			getAllUsers().then((res) => setListUsers(res.users));
-			Swal.fire({
-				position: 'center',
-				icon: 'success',
-				title: `Set visiter success`,
-				showConfirmButton: false,
-				timer: 2000,
-				target: 'body',
-			});
+			getAllUsers()
+				.then((res) => {
+					setListUsers(res.users);
+					Swal.fire({
+						position: 'center',
+						icon: 'success',
+						title: `Set visiter success`,
+						showConfirmButton: false,
+						timer: 2000,
+						target: 'body',
+					});
+				})
+				.catch((err) => {
+					Swal.fire({
+						position: 'center',
+						icon: 'error',
+						title: `Có lỗi xảy ra khi cấp quyền cho tài khoản`,
+						showConfirmButton: false,
+						timer: 2000,
+						target: 'body',
+					});
+				});
 		});
 	};
 
