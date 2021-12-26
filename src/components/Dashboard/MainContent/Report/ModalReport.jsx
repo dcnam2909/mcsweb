@@ -93,12 +93,14 @@ export default function ModalReport({
 												{item.visiter?.username}
 											</TableCell>
 											<TableCell align="center">
+												{console.log()}
 												{item.timeCheckin
-													? new Date(item?.timeCheckin).getDate() +
-													  '/' +
-													  (new Date(item?.timeCheckin).getMonth() + 1) +
-													  '/' +
-													  new Date(item?.timeCheckin).getFullYear()
+													? new Date(item?.timeCheckin).toLocaleString(
+															'vi-VN',
+															{
+																timeZone: 'UTC',
+															},
+													  )
 													: 'N/A'}
 											</TableCell>
 											<TableCell align="left">{item.imei}</TableCell>
